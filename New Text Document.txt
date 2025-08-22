@@ -1,0 +1,151 @@
+Theme ==>  Dark(system)
+Do not allow users to select a different theme  check-in
+Customize Header
+select
+header to use ==> Jenkins Header  ==> Image==>https://t3.ftcdn.net/jpg/03/07/44/00/360_F_307440021_iPN8XaXIgqzjwkR5pbmtrtY55t9ECVUk.jpg
+
+Text ==> Raja-Technology
+
+Header Coloring Sample ==> Hudson==>  var(--accent-color) ==> var(--white)  
+Pipeline stage check all
+
+pipeline Graph check all
+
+Login page 
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: linear-gradient(to right, #e0f7fa 50%, #ffffff 50%);
+    font-family: 'Segoe UI', sans-serif;
+    position: relative;
+  }
+
+  .login-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffffcc;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+  }
+
+  h1 {
+    color: #003c8f;
+    margin-bottom: 25px;
+  }
+
+  input, button {
+    border-radius: 8px !important;
+    padding: 12px !important;
+    width: 100% !important;
+    margin-bottom: 12px;
+    font-size: 16px;
+  }
+
+  .submit-button {
+    background-color: #0077c2 !important;
+    color: white !important;
+    border: none !important;
+    cursor: pointer;
+  }
+
+  .submit-button:hover {
+    background-color: #005fa3 !important;
+  }
+
+  label.checkbox-inline {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .bottom-links {
+    margin-top: 12px;
+  }
+
+  .bottom-links a {
+    color: #005fa3;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+    margin: 5px;
+  }
+
+  #jenkins-head-icon {
+    display: none;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+  }
+</style>
+
+<script>
+  window.onload = function() {
+    const mainPanel = document.querySelector("#main-panel");
+    if (mainPanel) {
+      const box = document.createElement("div");
+      box.className = "login-box";
+
+      const form = mainPanel.querySelector("form");
+      if (form) {
+        // ✨ Add custom welcome message with DevOps emoji
+        const welcomeHeading = document.createElement("h2");
+        welcomeHeading.innerHTML = "🔄 Welcome to <strong>Raja-Technologies CI/CD</strong>";
+        welcomeHeading.style.color = "#0077c2";
+        welcomeHeading.style.marginBottom = "10px";
+        welcomeHeading.style.fontSize = "20px";
+        box.appendChild(welcomeHeading);
+
+        // Existing main heading
+        const heading = document.createElement("h1");
+        heading.innerText = "Sign in to Jenkins";
+        box.appendChild(heading);
+
+        box.appendChild(form);
+
+        const checkbox = form.querySelector("input[type='checkbox']");
+        const label = checkbox?.closest("label");
+        if (label) {
+          label.className = "checkbox-inline";
+        }
+
+        const links = document.createElement("div");
+        links.className = "bottom-links";
+        links.innerHTML = `
+          <a href="mailto:admin@example.com?subject=Request%20for%20Account%20Creation">Create Account</a> |
+          <a href="mailto:admin@example.com?subject=Forgot%20Username%20or%20Password">Forgot Username / Password?</a>
+        `;
+        box.appendChild(links);
+
+        mainPanel.innerHTML = "";
+        mainPanel.appendChild(box);
+
+        const footer = document.createElement("footer");
+        footer.innerHTML = "© 2025 Raja-Technologies Jenkins Portal. All rights reserved.";
+        document.body.appendChild(footer);
+      }
+    }
+  };
+</script>
+
+############################################################################################################
+
+
+apply
