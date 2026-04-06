@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign in - Jenkins</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep:    #07101c;
+      --bg-mid:     #0d1e30;
+      --accent:     #0077c2;
+      --accent-2:   #00aaff;
+      --border:     rgba(0,170,255,0.18);
+      --text:       #e2eaf2;
+      --muted:      #6a90b0;
+      --card-bg:    rgba(13,30,48,0.85);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg-deep);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* ── Animated grid background ── */
+    .bg {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        linear-gradient(135deg, #07101c 0%, #0d2240 55%, #071525 100%);
+    }
+    .bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,170,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,170,255,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      animation: gridPulse 8s ease-in-out infinite alternate;
+    }
+    @keyframes gridPulse {
+      from { opacity: 0.4; }
+      to   { opacity: 1; }
+    }
+
+    /* glowing orbs */
+    .orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(80px); pointer-events: none; z-index: 0;
+    }
+    .orb1 {
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(0,119,194,0.22) 0%, transparent 70%);
+      top: -140px; left: -160px;
+    }
+    .orb2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,60,143,0.18) 0%, transparent 70%);
+      bottom: -120px; right: -100px;
+    }
+
+    /* ── Card ── */
+    .card-wrap {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%; max-width: 420px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 44px 40px 36px;
+      backdrop-filter: blur(16px);
+      box-shadow:
+        0 32px 64px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(0,170,255,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+      animation: cardIn 0.7s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @keyframes cardIn {
+      from { opacity:0; transform: translateY(28px) scale(0.97); }
+      to   { opacity:1; transform: translateY(0)    scale(1);    }
+    }
+
+    /* ── Logo ── */
+    .logo-wrap {
+      display: flex; flex-direction: column;
+      align-items: center; margin-bottom: 36px;
+    }
+    .logo-icon {
+      width: 66px; height: 66px;
+      background: linear-gradient(135deg, #0077c2, #003c8f);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      box-shadow:
+        0 0 0 8px rgba(0,119,194,0.12),
+        0 12px 32px rgba(0,119,194,0.45);
+      animation: iconPulse 3s ease-in-out infinite;
+    }
+    @keyframes iconPulse {
+      0%,100% { box-shadow: 0 0 0 8px rgba(0,119,194,0.12), 0 12px 32px rgba(0,119,194,0.45); }
+      50%      { box-shadow: 0 0 0 14px rgba(0,119,194,0.08), 0 12px 40px rgba(0,119,194,0.6); }
+    }
+    .brand-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 24px; font-weight: 700;
+      color: #ffffff;
+      margin-top: 14px; letter-spacing: 0.5px;
+    }
+    .brand-sub {
+      font-size: 10px; font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── Form ── */
+    .field { margin-bottom: 18px; }
+
+    label {
+      display: block;
+      font-size: 11px; font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      color: #ffffff;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--accent-2);
+      background: rgba(0,170,255,0.07);
+      box-shadow: 0 0 0 3px rgba(0,170,255,0.14);
+    }
+    input::placeholder { color: rgba(255,255,255,0.2); }
+
+    /* remember me */
+    .remember {
+      display: flex; align-items: center; gap: 8px;
+      margin: 4px 0 24px;
+    }
+    .remember input[type="checkbox"] {
+      width: 15px; height: 15px;
+      accent-color: var(--accent-2);
+      cursor: pointer;
+    }
+    .remember span {
+      font-size: 13px; color: var(--muted);
+    }
+
+    /* submit */
+    button[type="submit"] {
+      width: 100%;
+      background: linear-gradient(135deg, #0088d8, #005fa3);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      font-size: 14px; font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.6px;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 6px 24px rgba(0,119,194,0.4);
+    }
+    button[type="submit"]::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    button[type="submit"]:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 32px rgba(0,119,194,0.55);
+    }
+    button[type="submit"]:hover::after { opacity: 1; }
+    button[type="submit"]:active { transform: translateY(0); }
+
+    /* footer */
+    .footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(100,140,170,0.5);
+    }
+
+    /* divider line at top of card */
+    .card-accent {
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-2), transparent);
+      border-radius: 3px 3px 0 0;
+      margin: -44px -40px 36px;
+      border-radius: 20px 20px 0 0;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="card-wrap">
+  <div class="card">
+    <div class="card-accent"></div>
+
+    <div class="logo-wrap">
+      <div class="logo-icon">⚙️</div>
+      <div class="brand-name">Raja-Technologies</div>
+      <div class="brand-sub">CI/CD Portal</div>
+    </div>
+
+    <form method="post" action="/j_spring_security_check">
+      <div class="field">
+        <label for="j_username">Username</label>
+        <input type="text" id="j_username" name="j_username" autocomplete="username" placeholder="Enter your username" autofocus />
+      </div>
+
+      <div class="field">
+        <label for="j_password">Password</label>
+        <input type="password" id="j_password" name="j_password" autocomplete="current-password" placeholder="••••••••" />
+      </div>
+
+      <div class="remember">
+        <input type="checkbox" id="remember_me" name="remember_me" />
+        <span>Keep me signed in</span>
+      </div>
+
+      <button type="submit">Sign in</button>
+    </form>
+
+    <div class="footer">© 2025 Raja-Technologies Jenkins Portal. All rights reserved.</div>
+  </div>
+</div>
+
+</body>
+</html>
