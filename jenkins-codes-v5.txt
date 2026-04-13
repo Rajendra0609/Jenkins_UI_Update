@@ -1,0 +1,451 @@
+================================================================
+HEAD CODE  →  Manage Jenkins → Appearance → Login Page → Head
+================================================================
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=DM+Sans:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ── Full page background ── */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  font-family: 'DM Sans', 'Segoe UI', sans-serif !important;
+  background: #07101f !important;
+  background-image:
+    radial-gradient(ellipse 70% 90% at 5% 50%, rgba(6,30,68,0.98) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 80% 10%, rgba(0,90,170,0.2) 0%, transparent 55%) !important;
+}
+
+/* ── Hide ALL Jenkins chrome ── */
+#header, #breadcrumbBar, #page-header,
+.page-header, .jenkins-breadcrumbs,
+.jenkins-header, nav, footer.page-footer { display: none !important; }
+
+/* ── Neutralise Jenkins wrapper containers ── */
+#page-wrap, #page-body, #main-panel,
+.page-body, .container, .row {
+  all: unset !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ════════════════════════════════════════════
+   LEFT PANEL  — fixed, left 50% of screen
+   ════════════════════════════════════════════ */
+#raj-panel {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 50% !important;
+  height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  padding: 60px 72px !important;
+  z-index: 10 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+}
+
+/* ── Brand row ── */
+.raj-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 18px !important;
+  margin-bottom: 16px !important;
+}
+
+.raj-icon {
+  width: 58px !important; height: 58px !important;
+  background: linear-gradient(145deg, #1e8de8, #003fa0) !important;
+  border-radius: 16px !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  box-shadow: 0 10px 28px rgba(0,110,200,0.45) !important;
+  flex-shrink: 0 !important;
+}
+
+.raj-title {
+  font-family: 'Rajdhani', 'Segoe UI', sans-serif !important;
+  font-weight: 700 !important; font-size: 32px !important;
+  color: #ffffff !important; letter-spacing: 0.5px !important; line-height: 1.05 !important;
+  display: block !important;
+}
+
+.raj-badge {
+  font-size: 10px !important; letter-spacing: 3.5px !important;
+  color: #3fa3e0 !important; font-weight: 600 !important;
+  margin-top: 5px !important; display: block !important;
+}
+
+/* ── Description ── */
+.raj-desc {
+  color: #6a92b8 !important; font-size: 14.5px !important;
+  line-height: 1.78 !important; max-width: 440px !important;
+  margin: 0 0 48px !important; display: block !important;
+}
+
+/* ── Feature cards grid ── */
+.raj-cards {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 14px !important; max-width: 520px !important;
+}
+
+.raj-card {
+  background: rgba(255,255,255,0.038) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 18px !important; padding: 26px 22px !important;
+  transition: background 0.22s, border-color 0.22s !important;
+  display: block !important;
+}
+
+.raj-card:hover {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.14) !important;
+}
+
+.raj-card-icon {
+  width: 46px !important; height: 46px !important;
+  border-radius: 12px !important;
+  display: flex !important; align-items: center !important;
+  justify-content: center !important; margin-bottom: 14px !important;
+}
+
+.icon-o { background: rgba(245,130,32,0.18) !important; }
+.icon-b { background: rgba(0,155,255,0.18) !important; }
+.icon-g { background: rgba(40,200,120,0.18) !important; }
+.icon-p { background: rgba(220,60,130,0.18) !important; }
+
+.raj-card-label {
+  color: #c0daf0 !important; font-size: 11px !important;
+  font-weight: 700 !important; letter-spacing: 1.8px !important;
+  text-transform: uppercase !important; margin-bottom: 7px !important;
+  display: block !important;
+}
+
+.raj-card-desc {
+  color: #4a6a8c !important; font-size: 13px !important;
+  line-height: 1.55 !important; display: block !important;
+}
+
+/* ════════════════════════════════════════════
+   RIGHT PANEL WRAPPER  — injected by JS
+   ════════════════════════════════════════════ */
+#raj-right-panel {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 50% !important;
+  height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 40px 28px !important;
+  background: rgba(255,255,255,0.022) !important;
+  border-left: 1px solid rgba(255,255,255,0.07) !important;
+  z-index: 10 !important;
+  margin: 0 !important;
+  overflow-y: auto !important;
+}
+
+/* ── The form card — full width of right panel minus padding ── */
+.login form,
+.login-page form,
+form[name="login"],
+form#login {
+  width: 100% !important;
+  max-width: 560px !important;
+  background: rgba(6, 18, 42, 0.82) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 24px !important;
+  padding: 48px 52px !important;
+  backdrop-filter: blur(10px) !important;
+  margin: 0 auto !important;
+  display: block !important;
+}
+
+/* ── Sign-In icon above form ── */
+.login form::before,
+form[name="login"]::before,
+form#login::before {
+  content: '' !important;
+  display: block !important;
+  width: 74px !important; height: 74px !important;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34' fill='none'%3E%3Ccircle cx='17' cy='17' r='13' stroke='white' stroke-width='1.4' opacity='0.3'/%3E%3Cpath d='M17 7v5M17 22v5M7 17h5M22 17h5' stroke='white' stroke-width='1.9' stroke-linecap='round'/%3E%3Ccircle cx='17' cy='17' r='4.5' fill='white'/%3E%3C/svg%3E")
+    center / 38px no-repeat,
+    linear-gradient(145deg, #1e8de8, #003fa0) !important;
+  border-radius: 20px !important;
+  margin: 0 auto 20px !important;
+  box-shadow: 0 12px 32px rgba(0,100,200,0.4) !important;
+}
+
+/* ── Sign In title ── */
+.raj-signin-title {
+  text-align: center !important;
+  margin-bottom: 34px !important;
+  display: block !important;
+}
+
+.raj-signin-title h2 {
+  font-family: 'Rajdhani', 'Segoe UI', sans-serif !important;
+  font-weight: 700 !important; font-size: 32px !important;
+  color: #ffffff !important; margin: 0 0 6px !important;
+}
+
+.raj-signin-title p {
+  font-size: 14px !important; color: #6a8fb0 !important; margin: 0 !important;
+}
+
+/* ── Labels ── */
+label {
+  color: #7aadcc !important;
+  font-size: 11px !important; font-weight: 600 !important;
+  letter-spacing: 1.8px !important; text-transform: uppercase !important;
+  display: block !important; margin-bottom: 8px !important;
+  margin-top: 20px !important;
+  font-family: 'DM Sans', 'Segoe UI', sans-serif !important;
+}
+
+/* ── Inputs ── */
+input[type="text"],
+input[type="password"] {
+  width: 100% !important;
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.13) !important;
+  border-radius: 11px !important;
+  color: #ffffff !important;
+  font-family: 'DM Sans', 'Segoe UI', sans-serif !important;
+  font-size: 15px !important;
+  padding: 14px 20px !important;
+  outline: none !important;
+  display: block !important;
+  margin-bottom: 4px !important;
+  transition: border-color 0.2s, background 0.2s !important;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #1a7fd4 !important;
+  background: rgba(255,255,255,0.11) !important;
+  box-shadow: 0 0 0 3px rgba(26,127,212,0.15) !important;
+}
+
+/* ── Checkbox ── */
+label[for="remember_me"], .login .checkbox label {
+  text-transform: none !important; letter-spacing: 0 !important;
+  font-size: 13px !important; color: #3d5a74 !important;
+  display: inline !important; margin-top: 4px !important;
+}
+
+/* ── Submit button ── */
+input[type="submit"],
+button[type="submit"],
+.btn-primary,
+.login input[name="Submit"] {
+  width: 100% !important;
+  background: linear-gradient(135deg, #1a80d8, #0050a8) !important;
+  color: #ffffff !important; border: none !important;
+  border-radius: 11px !important; padding: 16px !important;
+  font-family: 'DM Sans', 'Segoe UI', sans-serif !important;
+  font-size: 13px !important; font-weight: 700 !important;
+  letter-spacing: 2.5px !important; text-transform: uppercase !important;
+  cursor: pointer !important; margin-top: 28px !important;
+  display: block !important;
+  transition: opacity 0.18s, transform 0.1s !important;
+}
+
+input[type="submit"]:hover, button[type="submit"]:hover { opacity: 0.88 !important; }
+input[type="submit"]:active, button[type="submit"]:active { transform: scale(0.99) !important; }
+
+/* ── Hide Jenkins logo / h1 / default header ── */
+img, h1, .logo { display: none !important; }
+.login h1, .login-title, .signin-title { display: none !important; }
+
+/* ── Reset Jenkins form table layout ── */
+.login form table, .login form tbody,
+.login form tr, .login form td {
+  display: block !important; width: 100% !important; padding: 0 !important;
+  border: none !important; background: none !important;
+}
+
+/* ── Footer ── */
+#raj-page-footer {
+  position: fixed !important; bottom: 16px !important;
+  left: 0 !important; width: 100% !important;
+  text-align: center !important; font-size: 11px !important;
+  color: #1a2f44 !important; z-index: 20 !important;
+  pointer-events: none !important;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  #raj-panel {
+    position: relative !important; width: 100% !important;
+    height: auto !important; padding: 40px 28px 28px !important;
+  }
+  #raj-right-panel {
+    position: relative !important; width: 100% !important;
+    height: auto !important; border-left: none !important;
+    border-top: 1px solid rgba(255,255,255,0.07) !important;
+    padding: 32px 20px !important;
+  }
+  html, body { overflow: auto !important; }
+  .raj-cards { grid-template-columns: 1fr 1fr !important; }
+  .login form, form[name="login"], form#login {
+    padding: 36px 28px !important;
+  }
+}
+</style>
+
+
+================================================================
+HEADER CODE  →  Manage Jenkins → Appearance → Login Page → Header
+================================================================
+
+<div id="raj-panel">
+
+  <div class="raj-brand">
+    <div class="raj-icon">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <circle cx="15" cy="15" r="12" stroke="white" stroke-width="1.4" opacity="0.28"/>
+        <path d="M15 6v4M15 20v4M6 15h4M20 15h4" stroke="white" stroke-width="1.9" stroke-linecap="round"/>
+        <circle cx="15" cy="15" r="4" fill="white"/>
+        <path d="M9.5 9.5l2.5 2.5M18 18l2.5 2.5M20.5 9.5L18 12M12 18l-2.5 2.5" stroke="white" stroke-width="1.3" stroke-linecap="round" opacity="0.6"/>
+      </svg>
+    </div>
+    <div>
+      <span class="raj-title">Raja-Technologies</span>
+      <span class="raj-badge">CI / CD PORTAL</span>
+    </div>
+  </div>
+
+  <p class="raj-desc">
+    Jenkins Automation Infrastructure — Real-time build monitoring and
+    deployment management for your enterprise pipelines.
+  </p>
+
+  <div class="raj-cards">
+
+    <div class="raj-card">
+      <div class="raj-card-icon icon-o">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <rect x="6" y="10" width="10" height="9" rx="1.5" stroke="#f5821f" stroke-width="1.6"/>
+          <path d="M8 10V7.5a3 3 0 016 0V10" stroke="#f5821f" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="11" cy="14.5" r="1.2" fill="#f5821f"/>
+        </svg>
+      </div>
+      <span class="raj-card-label">Secure Access</span>
+      <span class="raj-card-desc">Enterprise-grade auth with JWT-based security</span>
+    </div>
+
+    <div class="raj-card">
+      <div class="raj-card-icon icon-b">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M11 3v4M11 15v4M3 11h4M15 11h4" stroke="#009bff" stroke-width="1.7" stroke-linecap="round"/>
+          <path d="M11 8l-1 3h2.5L10 18" stroke="#009bff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="raj-card-label">Live Pipelines</span>
+      <span class="raj-card-desc">Real-time build status on all jobs and agents</span>
+    </div>
+
+    <div class="raj-card">
+      <div class="raj-card-icon icon-g">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <rect x="3"    y="14" width="3.5" height="5" rx="1" fill="#28c878"/>
+          <rect x="9.25" y="10" width="3.5" height="9" rx="1" fill="#28c878" opacity="0.8"/>
+          <rect x="15.5" y="6"  width="3.5" height="13" rx="1" fill="#28c878" opacity="0.6"/>
+          <path d="M4.75 13l5.5-4 5.5-3.5" stroke="#28c878" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="raj-card-label">Build Reports</span>
+      <span class="raj-card-desc">Detailed analytics and pipeline insights</span>
+    </div>
+
+    <div class="raj-card">
+      <div class="raj-card-icon icon-p">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="7.5" stroke="#dc3c82" stroke-width="1.5"/>
+          <circle cx="11" cy="11" r="3.5" stroke="#dc3c82" stroke-width="1.3"/>
+          <path d="M11 3.5V7M11 15v3.5M3.5 11H7M15 11h3.5" stroke="#dc3c82" stroke-width="1.2" stroke-linecap="round" opacity="0.65"/>
+        </svg>
+      </div>
+      <span class="raj-card-label">Resource Control</span>
+      <span class="raj-card-desc">Efficient agent allocation and tracking</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+
+  function injectSignInHeader() {
+    var form = document.querySelector('.login form, form[name="login"], form#login');
+    if (!form) return;
+    if (document.querySelector('.raj-signin-title')) return;
+    var div = document.createElement('div');
+    div.className = 'raj-signin-title';
+    div.innerHTML = '<h2>Sign In</h2><p>Access your dashboard</p>';
+    form.insertBefore(div, form.firstChild);
+  }
+
+  function buildRightPanel() {
+    if (document.getElementById('raj-right-panel')) return;
+
+    var loginEl = document.querySelector(
+      'div.login, .login-page, #loginIntroDefault, #main-panel'
+    );
+    if (!loginEl) return;
+
+    var rp = document.createElement('div');
+    rp.id = 'raj-right-panel';
+
+    loginEl.parentNode.insertBefore(rp, loginEl);
+    rp.appendChild(loginEl);
+
+    loginEl.style.cssText =
+      'position:static !important;' +
+      'width:100% !important;' +
+      'height:auto !important;' +
+      'display:flex !important;' +
+      'flex-direction:column !important;' +
+      'align-items:center !important;' +
+      'justify-content:center !important;' +
+      'margin:0 !important;' +
+      'padding:0 !important;' +
+      'background:transparent !important;' +
+      'border:none !important;';
+  }
+
+  function init() {
+    buildRightPanel();
+    injectSignInHeader();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  setTimeout(init, 200);
+  setTimeout(init, 600);
+
+})();
+</script>
+
+
+================================================================
+FOOTER CODE  →  Manage Jenkins → Appearance → Login Page → Footer
+================================================================
+
+<div id="raj-page-footer">© 2025 Raja-Technologies Jenkins Portal. All rights reserved.</div>
