@@ -921,3 +921,19 @@ echo "Java installed at: $(which java)"
 ### Fields You Can Safely Leave Blank
 
 `AMI Filters`, `AMI Users`, `Root command prefix`, `Agent command prefix`, `Agent command suffix`, `Override temporary dir location`, `User Data`, `Block device mapping`, `IAM Instance Profile`, `T2 Unlimited`, `Availability Zone`, `Disk Space Monitoring Thresholds`, `Tool Locations`, `Environment variables` — none of these are needed for a basic EC2 agent setup.
+
+
+
+# Get your Jenkins pod name
+kubectl get pods -n <your-namespace> | grep jenkins
+
+# Exec in
+kubectl exec -it <jenkins-pod-name> -n <your-namespace> -- bash
+
+# Remove the broken plugin and its stored config
+rm /var/jenkins_home/plugins/ec2.jpi
+rm /var/jenkins_home/plugins/ec2.jpi.pinned 2>/dev/null || true
+rm -rf /var/jenkins_home/plugins/ec2/
+rm /var/jenkins_home/ec2.xml
+
+exit
